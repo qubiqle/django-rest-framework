@@ -25,6 +25,8 @@ import inspect
 import re
 import uuid
 
+from rest_framework.utils.formatting import lazy_format
+
 
 class empty:
     """
@@ -559,10 +561,10 @@ class CharField(Field):
         min_length = kwargs.pop('min_length', None)
         super(CharField, self).__init__(**kwargs)
         if max_length is not None:
-            message = self.error_messages['max_length'].format(max_length=max_length)
+            message = lazy_format(self.error_messages['max_length'], max_length=max_length)
             self.validators.append(MaxLengthValidator(max_length, message=message))
         if min_length is not None:
-            message = self.error_messages['min_length'].format(min_length=min_length)
+            message = lazy_format(self.error_messages['min_length'], min_length=min_length)
             self.validators.append(MinLengthValidator(min_length, message=message))
 
     def run_validation(self, data=empty):
@@ -666,10 +668,10 @@ class IntegerField(Field):
         min_value = kwargs.pop('min_value', None)
         super(IntegerField, self).__init__(**kwargs)
         if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
+            message = lazy_format(self.error_messages['max_value'], max_length=max_value)
             self.validators.append(MaxValueValidator(max_value, message=message))
         if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
+            message = lazy_format(self.error_messages['min_value'], min_length=min_value)
             self.validators.append(MinValueValidator(min_value, message=message))
 
     def to_internal_value(self, data):
@@ -700,10 +702,10 @@ class FloatField(Field):
         min_value = kwargs.pop('min_value', None)
         super(FloatField, self).__init__(**kwargs)
         if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
+            message = lazy_format(self.error_messages['max_value'], max_value=max_value)
             self.validators.append(MaxValueValidator(max_value, message=message))
         if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
+            message = lazy_format(self.error_messages['min_value'], min_value=min_value)
             self.validators.append(MinValueValidator(min_value, message=message))
 
     def to_internal_value(self, data):
@@ -739,10 +741,10 @@ class DecimalField(Field):
         self.coerce_to_string = coerce_to_string if (coerce_to_string is not None) else self.coerce_to_string
         super(DecimalField, self).__init__(**kwargs)
         if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
+            message = lazy_format(self.error_messages['max_value'], max_value=max_value)
             self.validators.append(MaxValueValidator(max_value, message=message))
         if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
+            message = lazy_format(self.error_messages['min_value'], min_value=min_value)
             self.validators.append(MinValueValidator(min_value, message=message))
 
     def to_internal_value(self, data):
@@ -1332,7 +1334,7 @@ class ModelField(Field):
         max_length = kwargs.pop('max_length', None)
         super(ModelField, self).__init__(**kwargs)
         if max_length is not None:
-            message = self.error_messages['max_length'].format(max_length=max_length)
+            message = lazy_format(self.error_messages['max_value'], max_value=max_length)
             self.validators.append(MaxLengthValidator(max_length, message=message))
 
     def to_internal_value(self, data):
